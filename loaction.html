@@ -1,0 +1,139 @@
+
+<html>
+<head>
+         <script src="https://maps.googleapis.com/maps/api/js"></script>
+                                    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPVty7g6iFJt3yllkBFE2aih5-8FD1ecA&callback=initMap"
+                                  type="text/javascript"></script>
+                                    <script type="text/javascript">
+                                    <%--if (navigator.geolocation) {
+                                        navigator.geolocation.getCurrentPosition(function (p) {
+                                            var LatLng = new google.maps.LatLng(p.coords.latitude, p.coords.longitude);
+                                            var mapOptions = {
+                                                center: LatLng,
+                                                zoom: 13,
+                                                mapTypeId: google.maps.MapTypeId.ROADMAP
+                                            };
+                                            var map = new google.maps.Map(document.getElementById("dvMap"), mapOptions);
+                                            var marker = new google.maps.Marker({
+                                                position: LatLng,
+                                                map: map,
+                                                title: "<div style = 'height:60px;width:200px'><b>Your location:</b><br />Latitude: " + p.coords.latitude + "<br />Longitude: " + p.coords.longitude
+                                            });
+          
+                                            google.maps.event.addListener(map, "click", function (e) {
+                                                var infoWindow = new google.maps.InfoWindow();
+                                                infoWindow.setContent(marker.title);
+                                                infoWindow.open(map, marker);
+                                                document.getElementById('<%=TextBox1.ClientID%>').value = e.latLng.lat();
+                                                document.getElementById('<%=TextBox2.ClientID%>').value =  e.latLng.lng();
+                                            });
+
+
+		 
+		 
+                                        });
+                                    } else {
+				
+                                        alert('Geo Location feature is not supported in this browser.');
+                                    }--%>
+
+
+                                        var geocoder;
+                                        var map;
+                                        var markers = [];
+
+                                        function initialize() {
+                                            map = new google.maps.Map(
+                                              document.getElementById("map_canvas"), {
+                                                  center: new google.maps.LatLng(15.441, 32.278),
+                                                  zoom: 13,
+                                                  mapTypeId: google.maps.MapTypeId.ROADMAP
+                                              });
+                                            map.addListener('click', function (event) {
+                                                deleteMarker();
+                                                addNewMarkers(event.latLng)
+                                                document.getElementById('<%=Lattxt.ClientID%>').value = event.latLng.lat();
+                                                document.getElementById('<%=lontxt.ClientID%>').value = event.latLng.lng();
+                                                document.getElementById('<%=Lattxt11.ClientID%>').value = event.latLng.lat();
+                                                document.getElementById('<%=lontxt11.ClientID%>').value = event.latLng.lng();
+                                                document.getElementById('<%=Lattxt2.ClientID%>').value = event.latLng.lat();
+                                                document.getElementById('<%=Lontxt2.ClientID%>').value = event.latLng.lng();
+                                            });
+
+                                        }
+                                        google.maps.event.addDomListener(window, "load", initialize);
+
+                                        // Adds a marker to the map and pushes it into markers array
+                                        function addNewMarkers(location) {
+                                            var marker = new google.maps.Marker({
+                                                position: location,
+                                                map: map,
+                                                icon: "http://maps.google.com/mapfiles/ms/icons/yellow-dot.png",
+                                            });
+                                            markers.push(marker);
+                                        }
+
+                                        function deleteMarker() {
+                                            var i;
+                                            for (i = 0; i < markers.length; i++) {
+                                                markers[i].setMap(null);
+                                            }
+                                            markers = [];
+                                        };
+
+                                    </script>
+  
+</head>
+                                              
+												
+<div class="col-lg-12" runat="server" id ="locationDiv">
+              <div class="form-group">
+                                             <div class="col-lg-12">
+                                             <label for="location">الموقع </label>
+                                             <!-- Trigger the modal with a button -->  <div class=" form-group">
+                                             <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">اختر الموقع</button></div> 
+                                             </div>
+                                             <div class="clearfix"></div>
+                                             <div class="col-lg-12">
+                                             <div class=" form-group">
+                                                 <asp:TextBox ID="Lattxt2" runat="server" ReadOnly="true" cssClass="form-control"></asp:TextBox>
+                                             </div>
+
+                                             <div class=" form-group">
+                                                 <asp:TextBox ID="Lontxt2" runat="server" ReadOnly="true" cssClass="form-control"></asp:TextBox>
+                                             </div>
+                                              </div>
+                                             <!-- Modal -->
+                                             <div class="modal fade" id="myModal" role="dialog">
+                                                 <div class="modal-dialog">
+
+                                                     <!-- Modal content-->
+                                                     <div class="modal-content">
+                                                         <div class="modal-header">
+                                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                             <h4 class="modal-title">موقعك على الخريطة:</h4>
+                                                             <h5>مرر المؤشر في الخريطة ومن ثم اضغط على موقعك في الخريطة </h5>
+                                                         </div>
+                                                         <div class="modal-body">
+                                                             
+                                          <div id="map_canvas" style="width: 570px; height: 300px"></div>
+                                        <br />
+                                          <asp:TextBox ID="Lattxt" runat="server" Enabled ="false"   cssClass="form-control"></asp:TextBox>
+                                          <asp:TextBox ID="lontxt" runat="server" Enabled ="false" cssClass="form-control"></asp:TextBox>
+                                                    <asp:TextBox ID="Lattxt11" runat="server"  style="display :none "  cssClass="form-control"></asp:TextBox>
+                                          <asp:TextBox ID="lontxt11" runat="server"  style="display :none "  cssClass="form-control"></asp:TextBox>
+                                                                               
+                                                          </div>
+                                                         <div class="modal-footer">
+                                                             <button type="button" class="btn btn-default" data-dismiss="modal">تم </button>
+                                                         </div>
+                                                     </div>
+
+                                                 </div>
+                                             </div>
+                                             <br />
+                                           
+                                          
+                                         </div>
+         </div>
+</html>
