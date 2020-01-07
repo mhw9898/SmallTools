@@ -1,0 +1,146 @@
+<script src="assets/js/jquery-1.10.2.js"></script>
+    <script src="assets/chart/Chart.bundle.js"></script>
+    <script src="assets/chart/samples/utils.js"></script>
+          <script>
+    var barChartData;
+    var Data;
+    var DataID=[];
+    var DataName = [];
+    var c = 0;
+    var config;
+    var Datapie;
+    var DatapieID = [];
+    var DatapieName = [];
+    var cpie = 0;
+    function pie() {
+        $.ajax({
+            type: "post",
+            url: "Home.aspx/GetData1",
+            data: {},
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            success: function (res) {
+                Datapie = JSON.parse(res.d);
+                for (var key in Datapie) {
+                    if (Datapie.hasOwnProperty(key)) {
+                        DatapieID[key] = Datapie[key].ID;
+                        DatapieName[key] = Datapie[key].Name;
+                        cpie++;
+                    }
+
+
+                }
+                var config = {
+                    type: 'pie',
+                    data: {
+                        datasets: [{
+                            data: DatapieID,
+                            backgroundColor: [
+                                    window.chartColors.red,
+                                    window.chartColors.orange,
+                                    window.chartColors.yellow,
+                                    window.chartColors.green,
+                                    window.chartColors.blue,
+                            ],
+                            label: 'المشاريع'
+                        }],
+                        labels: DatapieName
+                    },
+                    options: {
+                        responsive: true
+                    }
+                };
+                var ctx = document.getElementById('can').getContext('2d');
+                window.myPie = new Chart(ctx, config);
+                //*************************************************)___-----------------------------------------
+            }, error: function (xhr, status, error) {
+                
+            }
+            
+        });
+
+
+        
+    }
+//*********************************************************************************************************************************************
+    function chartCollumn() {
+        $.ajax({
+            type: "post",
+            url: "Home.aspx/GetData",
+            data: {},
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            success: function (res) {
+                Data = JSON.parse(res.d);
+                for (var key in Data) {
+                    if (Data.hasOwnProperty(key)) {
+                        DataID[key] = Data[key].ID;
+                        DataName[key] = Data[key].Name;
+                        c++;
+                    }
+
+
+                }
+                
+                var color = Chart.helpers.color;
+                barChartData = {
+                    labels: DataName,
+                    datasets: [{
+                        label: 'عدد المشاريع',
+                        backgroundColor: color(window.chartColors.blue).alpha(0.8).rgbString(),
+                        borderColor: window.chartColors.blue,
+                        borderWidth: 1,
+                        data: DataID
+                    }]
+
+                };
+                $('canvas').fadeOut(20);
+                $('canvas').fadeIn(1000);
+
+                DataID[c] = 0;
+                var ctx = document.getElementById('canvas').getContext('2d');
+                window.myBar = new Chart(ctx, {
+                    type: 'bar',
+                    data: barChartData,
+                    options: {
+                        responsive: true,
+                        legend: {
+                            position: 'top'
+                        },
+                        title: {
+                            display: true,
+                            text: "تفاصيل"
+                        }
+                    }
+                })
+            },
+            error: function (xhr, status, error) {
+                
+            }
+        });
+    }
+    function all() {
+        chartCollumn();
+        pie();
+    }
+    $().ready(function () {
+        setInterval(function () {
+            all();
+            
+        },60*1000);
+        all();
+        
+    });
+              
+   
+   </Script>
+   
+   <div id="container" >
+        <canvas id="canvas"></canvas>
+            </div>
+                    </div>
+                <div class="col-lg-6">
+                    <div id="circle" >
+                    <canvas id="can"></canvas>
+            </div>
+        </div>
