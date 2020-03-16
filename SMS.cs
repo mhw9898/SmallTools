@@ -11,10 +11,10 @@ namespace MCS.Models
         public static void SendMail(string Message,string Title, string Email) { 
         MailMessage mail = new MailMessage();
         SmtpClient smtpServer = new SmtpClient("smtp.gmail.com");
-        smtpServer.Credentials = new System.Net.NetworkCredential("Email@gmail.com", "password");
+        smtpServer.Credentials = new System.Net.NetworkCredential("E@gmail.com", "password");
             smtpServer.Port = 587; // Gmail works on this port
             smtpServer.EnableSsl = true;
-            mail.From = new MailAddress("Email@gmail.com");
+            mail.From = new MailAddress("E@gmail.com");
             mail.To.Add(Email);
             mail.Subject = Title;
             mail.Body = Message;
